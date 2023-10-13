@@ -5,9 +5,6 @@ import (
 	"net/http"
 	"strings"
 
-	grpcGate "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"google.golang.org/grpc/status"
-
 	"log/slog"
 
 	"github.com/gin-contrib/cors"
@@ -110,19 +107,22 @@ func errorHook(c *gin.Context, e error) (int, interface{}) {
 		errpl = e.Error()
 	}
 
-	if stat, ok := status.FromError(e); ok {
-		errcode = grpcGate.HTTPStatusFromCode(stat.Code())
-		pb := stat.Proto()
-		// Get rid of extra info we have in message like code, grpc error etc
-		const desc = " desc = "
-		idx := strings.Index(pb.Message, desc)
-		if idx > 0 {
-			errpl = pb.Message[idx+len(desc):]
-		} else {
-			errpl = pb.GetMessage()
-		}
+	// Using the gRpc downstreame services? Uncomment this to enable gRpc error code conversion
+	// alsoe add grpcGate "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 
-	}
+	// if stat, ok := status.FromError(e); ok {
+	// 	errcode = grpcGate.HTTPStatusFromCode(stat.Code())
+	// 	pb := stat.Proto()
+	// 	// Get rid of extra info we have in message like code, grpc error etc
+	// 	const desc = " desc = "
+	// 	idx := strings.Index(pb.Message, desc)
+	// 	if idx > 0 {
+	// 		errpl = pb.Message[idx+len(desc):]
+	// 	} else {
+	// 		errpl = pb.GetMessage()
+	// 	}
+
+	// }
 
 	return errcode, gin.H{`error`: errpl}
 }

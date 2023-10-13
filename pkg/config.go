@@ -8,6 +8,6 @@ import (
 type Config struct {
 	IsDebugMode bool   `default:"false" envvar:"DEBUG_MODE"`
 	LogLevel    string `default:"info" envvar:"LOG_LEVEL"`
-	Metrics     *metrics.MetricsConfig
-	Service     *rest.HttpConfig
+	Metrics     metrics.MetricsConfig
+	Service     rest.HttpConfig
 }

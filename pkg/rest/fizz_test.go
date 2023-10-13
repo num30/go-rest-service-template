@@ -3,13 +3,13 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
-	grpcGate "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"net/http"
+	"testing"
+
 	"github.com/loopfz/gadgeto/tonic"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"net/http"
-	"testing"
 )
 
 func Test_errorHook(t *testing.T) {

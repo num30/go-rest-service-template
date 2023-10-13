@@ -21,8 +21,8 @@ func main() {
 
 	loadConfig()
 
-	metrics.StartMetricsServer(serviceConfig.Metrics)
-	r := server.NewRouter(serviceConfig.Service, serviceConfig.IsDebugMode)
+	metrics.StartMetricsServer(&serviceConfig.Metrics)
+	r := server.NewRouter(&serviceConfig.Service, serviceConfig.IsDebugMode)
 	r.Run()
 }
 

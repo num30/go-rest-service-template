@@ -6,13 +6,11 @@ require (
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-resty/resty/v2 v2.7.0
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0
 	github.com/loopfz/gadgeto v0.9.0
 	github.com/num30/config v0.1.2
 	github.com/num30/gin-swagger-ui v0.0.1
 	github.com/penglongli/gin-metrics v0.1.9
 	github.com/prometheus/client_golang v1.12.1
-	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/testify v1.8.3
 	github.com/wI2L/fizz v0.18.1
 	google.golang.org/grpc v1.58.0
@@ -40,7 +38,7 @@ require (
 	github.com/iamolegga/enviper v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
-	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
@@ -69,7 +67,6 @@ require (
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d // indirect
 	gopkg.in/go-playground/validator.v9 v9.30.0 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
