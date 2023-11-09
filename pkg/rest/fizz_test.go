@@ -3,13 +3,10 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/loopfz/gadgeto/tonic"
 	"github.com/stretchr/testify/assert"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func Test_errorHook(t *testing.T) {
@@ -40,25 +37,26 @@ func Test_errorHook(t *testing.T) {
 			expCode: 0,
 			expMsg:  "",
 		},
-		{
-			name:    "no_error",
-			err:     &grpcGate.HTTPStatusError{HTTPStatus: 404, Err: fmt.Errorf(dummyError)},
-			expCode: 404,
-			expMsg:  dummyErrResp,
-		},
-		{
-			name:    "grpc_error_extract_description",
-			err:     status.Errorf(codes.NotFound, "rpc error: code = Aborted desc = limit of sim cards reached for org"),
-			expCode: http.StatusNotFound,
-			expMsg:  "{\"error\":\"limit of sim cards reached for org\"}",
-		},
+		// Uncomment if you use grpc service downstream and want to propagate grpc errors
+		// {
+		// 	name:    "no_error",
+		// 	err:     &grpcGate.HTTPStatusError{HTTPStatus: 404, Err: fmt.Errorf(dummyError)},
+		// 	expCode: 404,
+		// 	expMsg:  dummyErrResp,
+		// },
+		// {
+		// 	name:    "grpc_error_extract_description",
+		// 	err:     status.Errorf(codes.NotFound, "rpc error: code = Aborted desc = limit of sim cards reached for org"),
+		// 	expCode: http.StatusNotFound,
+		// 	expMsg:  "{\"error\":\"limit of sim cards reached for org\"}",
+		// },
 
-		{
-			name:    "grpc_error_plain_description",
-			err:     status.Errorf(codes.NotFound, dummyError),
-			expCode: http.StatusNotFound,
-			expMsg:  dummyErrResp,
-		},
+		// {
+		// 	name:    "grpc_error_plain_description",
+		// 	err:     status.Errorf(codes.NotFound, dummyError),
+		// 	expCode: http.StatusNotFound,
+		// 	expMsg:  dummyErrResp,
+		// },
 	}
 
 	for _, ts := range tests {
