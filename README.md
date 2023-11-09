@@ -1,13 +1,15 @@
 # Rest Service Boilerplate
 
 Includes:
-- Basic configuration (pkg/config.go)[config.go]
-- Rest service based on Gin, Tonik and Fizz for OpenApi spec generation
+- Basic configuration [config.go](pkg/config.go)
+- Rest service based on [Gin](https://github.com/gin-gonic/gin) and [Fizz](https://github.com/wI2L/fizz) for OpenApi spec generation
 - Ping request handler (in `common` package)
-- Swagger UI on `/swagger`
-- serving metrics for Rest request on ":10250/metrics". 
-- custom metrics declared in (pkg/metrics/metrics.go)[metrics.go]
-- service-test tests in (/test/stest)(test/stest) and infrastructure to run then
+- Swagger UI check route `/swagger`
+- serving Prometheus metrics on ":10250/metrics". 
+- custom metrics defined in [metrics.go](pkg/metrics/metrics.go)
+- unit test for handlers in (pkg/server/router_test.go)[pkg/server/router_test.go]
+- service-test tests in (/test/stest)(test/stest) and infrastructure to run them
+- Dockerfiles for service and [service test](Int.Dockerfile)
 
 ## How to use 
 

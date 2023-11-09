@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/gin-contrib/cors"
@@ -35,16 +36,26 @@ func Test_RouterPing(t *testing.T) {
 }
 
 func Test_RouterGet(t *testing.T) {
-	// arrange
-	w := httptest.NewRecorder()
-
-	req, _ := http.NewRequest("GET", "/foos/bar", nil)
-
 	r := NewRouter(defaultConfig, false).fizz.Engine()
+	t.Run("PUT", func(tt *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("PUT", "/things/bar", strings.NewReader(`{ "value": "Thing value" }`))
+		// act
+		r.ServeHTTP(w, req)
 
-	// act
-	r.ServeHTTP(w, req)
+		// assert
+		assert.Equal(t, 201, w.Code)
+	})
 
-	// assert
-	assert.Equal(t, 200, w.Code)
+	t.Run("GET", func(tt *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/things/bar", nil)
+
+		// act
+		r.ServeHTTP(w, req)
+
+		// assert
+		assert.Equal(t, 200, w.Code)
+	})
+
 }
