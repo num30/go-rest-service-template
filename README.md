@@ -10,6 +10,8 @@
 - service-test tests in [/test/stest](test/stest/service_test.go). Refer to [service tests](https://github.com/num30/api-integration-test#rest-api-integration-test-example) repo for more info
 - Dockerfiles for service and [service test](Int.Dockerfile)
 - Basic configuration [config.go](pkg/config.go) based on [config](https://github.com/num30/config) package
+- CI with [Github Actions](.github/workflows/build.yaml) 
+- Github actions for publishing docker image with versioning( tags set to `github-sha` and `branch-[build-number]`). Separate tags used for application and test image
 
 # :computer: Try it
 - run unit tests `go test ./... -v`
@@ -27,6 +29,11 @@
 - Check swagger `http://localhost:8080/swagger`
 - Check Open API spec `http://localhost:8080/openapi.json`
 - Check Prometheus metrics `http://localhost:10250/metrics`
+
+## :whale: Try Docker Without Cloning the code 
+- run service  `docker run -p 8080:8080 -p 10250:10250 orsol/go-rest-service-template:latest`
+- run service tests `docker run orsol/go-rest-service-template:latest-test`
+- try steps from 3 to the end from [Try it](#computer-try-it) section
 
 
 ## :bulb: Hints to get started 

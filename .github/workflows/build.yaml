@@ -43,7 +43,8 @@ jobs:
           echo $DOCKERHUB_TOKEN | buildah login \
             --username $DOCKERHUB_USERNAME \
             --password-stdin docker.io
-            
+
+      # publish image with application with three tags `latest`, commit-sha and branch with build number            
       - name: OCI build and push
         shell: bash
         env:
@@ -57,6 +58,8 @@ jobs:
           buildah push $REGISTRY\:latest   
 
 
+      # Service test image is published to the same repository but `-test` prefix added to tags. 
+      # That way it's easier to run it in kubernetes 
       - name: OCI Push Integration Tests
         shell: bash
         working-directory: ${{ inputs.working-directory }}
