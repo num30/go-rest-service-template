@@ -1,6 +1,6 @@
-.PHONY: service-test.test test build lint deps 
+.PHONY:  test build lint deps 
 
-build: stest.build
+build: servicetest.build
 	@echo Building version: \"$(BIN_VER)\"
 	env CGO_ENABLED=0 go build -ldflags='-X github.com/num30/go-rest-service-template/cmd/version.Version=$(BIN_VER) -extldflags=-static' -o bin/rest-service cmd/server/main.go
 
@@ -19,9 +19,9 @@ clean:
 
 
 # service tests
-stest.test:
-	go test ./test/stest -tags stest  -v -count=1
+servicetest.run:
+	go test ./test/stest -tags servicetest  -v -count=1
 
 
-stest.build:
-	env CGO_ENABLED=0 go test ./test/stest -tags stest -v -c -o bin/service-test
+servicetest.build:
+	env CGO_ENABLED=0 go test ./test/stest -tags servicetest -v -c -o bin/service-test

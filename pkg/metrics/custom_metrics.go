@@ -19,7 +19,7 @@ func RecordFailedRequestMetric() {
 
 var (
 	opsSuccessProcessed = promauto.NewCounter(prometheus.CounterOpts{
-		Name:        "foo_requests_total",
+		Name:        "things_requests_total",
 		Help:        "The total number requests",
 		ConstLabels: map[string]string{"status": "succeeded"},
 	})
@@ -27,7 +27,7 @@ var (
 
 var (
 	opsFailedProcessed = promauto.NewCounter(prometheus.CounterOpts{
-		Name:        "foo_requests_total",
+		Name:        "things_requests_total",
 		Help:        "The total number requests",
 		ConstLabels: map[string]string{"status": "failed"},
 	})

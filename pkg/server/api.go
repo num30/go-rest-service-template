@@ -1,17 +1,17 @@
 package server
 
-type FooGetRequest struct {
+type ThingGetRequest struct {
 	Name string `path:"name" validate:"required"`
 }
 
-type FooGetResponse struct {
+type ThingGetResponse struct {
 	Result string
 }
 
-type FooPutRequest struct {
+type ThingPutRequest struct {
 	Name  string `path:"name" validate:"required"`
 	Value string `json:"value" validate:"required"`
 }
 
-type FooPutResponse struct {
+type ThingPutResponse struct {
 }

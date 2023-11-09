@@ -52,28 +52,6 @@ func NewFizzRouter(httpConfig *HttpConfig, srvName string, srvVersion string, is
 		return &PingResponse{Message: "pong", Service: fmt.Sprintf("%s@%s", srvName, srvVersion)}, nil
 	}, http.StatusOK))
 
-	// f.Generator().SetSecurityRequirement([]*openapi.SecurityRequirement{
-	// 	{
-	// 		"cookie": {"write", "read"},
-	// 	},
-	// })
-
-	// f.Generator().SetSecuritySchemes(map[string]*openapi.SecuritySchemeOrRef{
-	// 	"cookie": {
-	// 		SecurityScheme: &openapi.SecurityScheme{
-	// 			Type: "oauth2",
-	// 			Flows: &openapi.OAuthFlows{
-	// 				Implicit: &openapi.OAuthFlow{
-	// 					Scopes: map[string]string{
-	// 						"write": "write access",
-	// 						"read":  "read access",
-	// 					},
-	// 					AuthorizationURL: redirectUrl,
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// })
 	infos := &openapi.Info{
 		Title:       fmt.Sprintf("%v System", strings.ToTitle(srvName)),
 		Description: "Service API",
@@ -86,6 +64,8 @@ func NewFizzRouter(httpConfig *HttpConfig, srvName string, srvVersion string, is
 	return f
 }
 
+// Custom error hook to support HTTP error codes from the handler
+// Tonic handler returns an error without HTTP code however you can return rest.HttpError struct with an HTTP code and message
 func errorHook(c *gin.Context, e error) (int, interface{}) {
 	if e == nil {
 		slog.Error("This error means that something is broken but it's no clear what. Usually something bad with serialization")
@@ -102,13 +82,15 @@ func errorHook(c *gin.Context, e error) (int, interface{}) {
 		errcode = http.StatusBadRequest
 		errpl = e.Error()
 
-	case *grpcGate.HTTPStatusError:
-		errcode = et.HTTPStatus
-		errpl = e.Error()
+		// uncomment this and if you use Http gate for downstream gRpc services
+		// this will handle errors conversion preserving HTTP status code
+		// case *grpcGate.HTTPStatusError:
+		// 	errcode = et.HTTPStatus
+		// 	errpl = e.Error()
 	}
 
 	// Using the gRpc downstreame services? Uncomment this to enable gRpc error code conversion
-	// alsoe add grpcGate "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	// you will have to add  grpcGate "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 
 	// if stat, ok := status.FromError(e); ok {
 	// 	errcode = grpcGate.HTTPStatusFromCode(stat.Code())

@@ -17,7 +17,7 @@ func StartMetricsServer(conf *MetricsConfig) {
 	if conf.Enabled {
 		go func() {
 			http.Handle("/metrics", promhttp.Handler())
-			slog.Info("Starting metrics server on port %d", conf.Port)
+			slog.Info("Starting metrics server", "port", conf.Port)
 			err := http.ListenAndServe(fmt.Sprintf(":%d", conf.Port), nil)
 			if err != nil {
 				slog.With("error", err).Error("Error starting metrics server")

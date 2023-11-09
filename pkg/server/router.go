@@ -22,7 +22,7 @@ type Router struct {
 }
 
 func (r *Router) Run() {
-	slog.Info("Listening on port ", r.port)
+	slog.Info("Listening", "port", r.port)
 	err := r.fizz.Engine().Run(fmt.Sprint(":", r.port))
 	if err != nil {
 		panic(err)
@@ -42,16 +42,22 @@ func NewRouter(config *rest.HttpConfig, debugMode bool) *Router {
 }
 
 func (r *Router) init() {
-	fooGroup := r.fizz.Group("/foos", "Foo list", "Foo operations")
-	fooGroup.PUT("/:name", nil, tonic.Handler(r.fooPutHandler, http.StatusCreated))
-	fooGroup.GET("/:name", nil, tonic.Handler(r.fooGetHandler, http.StatusOK))
+
+	// Define routes here
+	thingsGroup := r.fizz.Group("/things", "Things list", "Things operations")
+
+	thingsGroup.PUT("/:name",
+		[]fizz.OperationOption{fizz.Summary("Put a thing")},
+		tonic.Handler(r.thingPutHandler, http.StatusCreated))
+
+	thingsGroup.GET("/:name", []fizz.OperationOption{fizz.Summary("Get a thing")}, tonic.Handler(r.thingGetHandler, http.StatusOK))
 }
 
-func (r *Router) fooGetHandler(c *gin.Context, req *FooGetRequest) (*FooGetResponse, error) {
+func (r *Router) thingGetHandler(c *gin.Context, req *ThingGetRequest) (*ThingGetResponse, error) {
 	// Record custom metric
 	metrics.RecordSuccessfulRequestMetric()
 	if val, ok := r.testStorage[req.Name]; ok {
-		return &FooGetResponse{
+		return &ThingGetResponse{
 			Result: val,
 		}, nil
 	} else {
@@ -62,7 +68,7 @@ func (r *Router) fooGetHandler(c *gin.Context, req *FooGetRequest) (*FooGetRespo
 	}
 }
 
-func (r *Router) fooPutHandler(c *gin.Context, req *FooPutRequest) (*FooPutResponse, error) {
+func (r *Router) thingPutHandler(c *gin.Context, req *ThingPutRequest) (*ThingPutResponse, error) {
 	r.testStorage[req.Name] = req.Value
-	return &FooPutResponse{}, nil
+	return &ThingPutResponse{}, nil
 }
