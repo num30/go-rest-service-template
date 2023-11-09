@@ -1,0 +1,74 @@
+name: build
+on:
+  push:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+          
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-api-integration-test
+          restore-keys: |
+            ${{ runner.os }}-go
+
+      - name: Build
+        shell: bash
+        run: make build
+
+      - name: Test
+        shell: bash
+        run: go test -v ./... -coverprofile="coverage.out"
+
+      - name: Init vars
+        id: vars_step
+        uses: ./.github/actions/git-vars
+
+      - name: Login to Docker registry
+        shell: bash
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          echo $DOCKERHUB_TOKEN | buildah login \
+            --username $DOCKERHUB_USERNAME \
+            --password-stdin docker.io
+            
+      - name: OCI build and push
+        shell: bash
+        env:
+          REGISTRY: orsol/go-rest-service-template
+        run: |
+          buildah bud --pull -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }} \
+            -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }} \
+            -t $REGISTRY\:latest .  && \
+          buildah push $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }} && \
+          buildah push $REGISTRY\:${{ steps.vars_step.outputs.sha-short }}   
+          buildah push $REGISTRY\:latest   
+
+
+      - name: OCI Push Integration Tests
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          REGISTRY: orsol/go-rest-service-template
+        run: |
+          buildah bud --pull -f Int.Dockerfile -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }}-test \
+            -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test \
+            -t $REGISTRY\:latest-test .  && \
+          buildah push $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test && \
+          buildah push $REGISTRY\:latest-test 
+          
+
+
+      
