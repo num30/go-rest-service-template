@@ -32,7 +32,6 @@
 
 ## :whale: Try Docker Without Cloning the code 
 - run service  `docker run -p 8080:8080 -p 10250:10250 orsol/go-rest-service-template:latest`
-- run service tests `docker run orsol/go-rest-service-template:latest-test`
 - try steps from 3 to the end from [Try it](#computer-try-it) section
 
 
