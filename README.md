@@ -3,12 +3,12 @@
 Includes:
 - Basic configuration [config.go](pkg/config.go)
 - Rest service based on [Gin](https://github.com/gin-gonic/gin) and [Fizz](https://github.com/wI2L/fizz) for OpenApi spec generation
-- Ping request handler (in `common` package)
-- Swagger UI check route `/swagger`
-- serving Prometheus metrics on ":10250/metrics". 
-- custom metrics defined in [metrics.go](pkg/metrics/metrics.go)
-- unit test for handlers in (pkg/server/router_test.go)[pkg/server/router_test.go]
-- service-test tests in (/test/stest)(test/stest) and infrastructure to run them
+- Basic healthcheck (ping handler) (in `common` package)
+- Swagger UI available on `http://localhost:8080/swagger` an Open API spec on `http://localhost:8080/openapi.json`
+- serving Prometheus metrics on `http://localhost:10250/metrics`
+- custom metrics defined in [metrics.go](pkg/metrics/custom_metrics.go)
+- unit test for handlers in [pkg/server/router_test.go](pkg/server/router_test.go)
+- service-test tests in [/test/stest](test/stest/service_test.go) and infrastructure to run them
 - Dockerfiles for service and [service test](Int.Dockerfile)
 
 ## How to use 
