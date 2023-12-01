@@ -2,6 +2,8 @@ module github.com/num30/go-rest-service-template
 
 go 1.21.1
 
+toolchain go1.21.3
+
 require (
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.9.1
