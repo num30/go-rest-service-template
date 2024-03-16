@@ -14,10 +14,6 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: Upgrade Buildah
-        shell: bash
-        run:  apt-get update && apt-get -y install buildah=1.35.0
-
       - name: Build
         shell: bash
         run: make build
