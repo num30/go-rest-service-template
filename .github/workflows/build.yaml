@@ -40,9 +40,9 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          echo $DOCKERHUB_TOKEN | buildah login \
+          buildah login \
             --username $DOCKERHUB_USERNAME \
-            --password-stdin docker.io
+            --password $DOCKERHUB_TOKEN
 
       # publish image with application with three tags `latest`, commit-sha and branch with build number            
       - name: OCI build and push
