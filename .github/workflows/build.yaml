@@ -1,26 +1,18 @@
 name: build
 on: [  push, workflow_dispatch ]  
     
+env:
+  REGISTRY: docker.io/orsol/go-rest-service-template
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.21
-          
-
-      - uses: actions/checkout@v3
-
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-api-integration-test
-          restore-keys: |
-            ${{ runner.os }}-go
 
       - name: Build
         shell: bash
@@ -40,15 +32,14 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          echo $DOCKERHUB_TOKEN | buildah login \
+          buildah login \
             --username $DOCKERHUB_USERNAME \
-            --password-stdin docker.io
+            --password $DOCKERHUB_TOKEN \
+            $REGISTRY
 
       # publish image with application with three tags `latest`, commit-sha and branch with build number            
       - name: OCI build and push
         shell: bash
-        env:
-          REGISTRY: orsol/go-rest-service-template
         run: |
           buildah bud --pull -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }} \
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }} \
@@ -62,9 +53,7 @@ jobs:
       # That way it's easier to run it in kubernetes 
       - name: OCI Push Integration Tests
         shell: bash
-        working-directory: ${{ inputs.working-directory }}
-        env:
-          REGISTRY: orsol/go-rest-service-template
+        working-directory: ${{ inputs.working-directory }}        
         run: |
           buildah bud --pull -f Int.Dockerfile -t $REGISTRY\:${{ steps.vars_step.outputs.sha-short }}-test \
             -t $REGISTRY\:${{ steps.vars_step.outputs.branch }}-${{ github.run_number }}-test \

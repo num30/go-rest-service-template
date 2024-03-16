@@ -20,4 +20,4 @@ runs:
       id: vars_step
       run: |
         echo "::set-output name=sha-short::$(git rev-parse --short=7 HEAD)"
-        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | sed -e 's/[^a-zA-Z0-9._-]/-/g' -e 's/^-//')"
