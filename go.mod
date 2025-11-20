@@ -1,8 +1,6 @@
 module github.com/num30/go-rest-service-template
 
-go 1.21.1
-
-toolchain go1.21.3
+go 1.24.0
 
 require (
 	github.com/gin-contrib/cors v1.3.0
@@ -66,10 +64,10 @@ require (
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/willf/bitset v1.1.11 // indirect
 	golang.org/x/arch v0.6.0 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	gopkg.in/go-playground/validator.v9 v9.30.0 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
